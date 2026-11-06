@@ -8,10 +8,10 @@ from models import Category, Expense, db
 
 app = Flask(__name__)
 
-# Format: mysql+pymysql://USERNAME:PASSWORD@HOST/DATABASE_NAME
+# Set DATABASE_URL to a SQLAlchemy-compatible database URL.
 # You can override this with an environment variable called DATABASE_URL.
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    "DATABASE_URL", "mysql+pymysql://root:your_password@localhost/expense_db"
+    "DATABASE_URL", "mysql+pymysql://root@localhost/expense_db"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # The secret key is needed for flash messages (small notifications after a form submit)
