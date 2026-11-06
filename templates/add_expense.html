@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Add Expense · Expense Tracker{% endblock %}
+
+{% block content %}
+<section class="two-col">
+
+  <!-- Expense form -->
+  <div class="card">
+    <h2>Add an Expense</h2>
+
+    {% if categories %}
+    <form method="POST" action="{{ url_for('save_expense') }}" class="form">
+      <label>
+        Amount ($)
+        <input type="number" name="amount" step="0.01" min="0.01" required>
+      </label>
+
+      <label>
+        Description
+        <input type="text" name="description" maxlength="200" required>
+      </label>
+
+      <label>
+        Category
+        <select name="category_id" required>
+          {% for c in categories %}
+            <option value="{{ c.id }}">{{ c.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label>
+        Date
+        <input type="date" name="date" value="{{ today }}">
+      </label>
+
+      <button type="submit">Save Expense</button>
+    </form>
+    {% else %}
+      <p>You need at least one category before adding expenses. Create one using the form on the right.</p>
+    {% endif %}
+  </div>
+
+  <!-- Category form -->
+  <div class="card">
+    <h2>Add a Category</h2>
+    <form method="POST" action="{{ url_for('add_category') }}" class="form">
+      <label>
+        Name
+        <input type="text" name="name" maxlength="50" required>
+      </label>
+
+      <label>
+        Budget limit ($)
+        <input type="number" name="budget_limit" step="0.01" min="0" required>
+      </label>
+
+      <button type="submit">Save Category</button>
+    </form>
+
+    {% if categories %}
+      <h3 class="subheading">Existing categories</h3>
+      <ul class="category-list">
+        {% for c in categories %}
+          <li>{{ c.name }} <span>${{ "%.2f"|format(c.budget_limit) }}</span></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+
+</section>
+{% endblock %}
